@@ -3,7 +3,6 @@
 
 namespace App\Filament\Resources;
 
-
 use App\Filament\Resources\ProductsResource\Pages;
 
 use App\Filament\Resources\ProductsResource\RelationMangers;

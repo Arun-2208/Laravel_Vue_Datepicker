@@ -2,7 +2,7 @@
 
 
 
-namespace App\Filament\Resources\BrandsResource\RelationManagers;
+namespace App\Filament\Resources\ShopCategories\Resource\RelationManagers;
 
 use App\Filament\Resources\ProductsResource;
 use Filament\Forms\Form;
