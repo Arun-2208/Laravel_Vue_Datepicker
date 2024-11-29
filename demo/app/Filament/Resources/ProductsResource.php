@@ -22,7 +22,8 @@ use Filament\Forms\Components\MarkdownEditor;
 
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\Select;
-
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Checkbox;
 use Filament\Tables\Columns\ColorColumn;
@@ -42,6 +43,15 @@ use Filament\Infolists\Components\ImageEntry;
 
 use Filament\Tables\Columns\Layout\Split;
 use Filament\Tables\Columns\Layout\Stack;
+
+use Filament\Tables\Filters\QueryBuilder;
+use Filament\Tables\Filters\QueryBuilder\Constraints\BooleanConstraint;
+use Filament\Tables\Filters\QueryBuilder\Constraints\DateConstraint;
+use Filament\Tables\Filters\QueryBuilder\Constraints\NumberConstraint;
+use Filament\Tables\Filters\QueryBuilder\Constraints\RelationshipConstraint;
+use Filament\Tables\Filters\QueryBuilder\Constraints\RelationshipConstraint\Operators\IsRelatedToOperator;
+use Filament\Tables\Filters\QueryBuilder\Constraints\SelectConstraint;
+use Filament\Tables\Filters\QueryBuilder\Constraints\TextConstraint;
 
 
 class ProductsResource extends Resource
@@ -193,10 +203,84 @@ class ProductsResource extends Resource
     {
         return $table
             ->columns([
-                //
+                ImageColumn::make('image')
+                    ->label('Image'),
+                    
+
+                TextColumn::make('name')
+                    ->label('Name')
+                    ->searchable()
+                    ->sortable(),
+
+                TextColumn::make('brand.name')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(),
+
+                IconColumn::make('is_visible')
+                    ->label('Visibility')
+                    ->sortable()
+                    ->toggleable(),
+
+                TextColumn::make('price')
+                    ->label('Price')
+                    ->searchable()
+                    ->sortable(),
+
+                TextColumn::make('sku')
+                    ->label('SKU')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(),
+
+                TextColumn::make('qty')
+                    ->label('Quantity')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(),
+
+                TextColumn::make('security_stock')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable()
+                    ->toggledHiddenByDefault(),
+
+                TextColumn::make('published_at')
+                    ->label('Publish Date')
+                    ->date()
+                    ->sortable()
+                    ->toggleable()
+                    ->toggledHiddenByDefault(),
             ])
             ->filters([
-                //
+                QueryBuilder::make()
+                    ->constraints([
+                        TextConstraint::make('name'),
+                        TextConstraint::make('slug'),
+                        TextConstraint::make('sku')
+                            ->label('SKU (Stock Keeping Unit)'),
+                        TextConstraint::make('barcode')
+                            ->label('Barcode (ISBN, UPC, GTIN, etc.)'),
+                        TextConstraint::make('description'),
+                        NumberConstraint::make('old_price')
+                            ->label('Compare at price')
+                            ->icon('heroicon-m-currency-dollar'),
+                        NumberConstraint::make('price')
+                            ->icon('heroicon-m-currency-dollar'),
+                        NumberConstraint::make('cost')
+                            ->label('Cost per item')
+                            ->icon('heroicon-m-currency-dollar'),
+                        NumberConstraint::make('qty')
+                            ->label('Quantity'),
+                        NumberConstraint::make('security_stock'),
+                        BooleanConstraint::make('is_visible')
+                            ->label('Visibility'),
+                        BooleanConstraint::make('featured'),
+                        BooleanConstraint::make('backorder'),
+                        BooleanConstraint::make('requires_shipping')
+                            ->icon('heroicon-m-truck'),
+                        DateConstraint::make('published_at'),
+                    ])
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

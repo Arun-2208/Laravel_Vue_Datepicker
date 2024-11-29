@@ -16,11 +16,13 @@ return new class extends Migration
         Schema::create('shop_categories_products', function (Blueprint $table) {
             $table->id(); 
             $table->foreignId('category_id')
-                  ->constrained('shop_categories.id') 
-                  ->cascadeOnDelete(); 
+                  ->constrained('shop_categories') 
+                  ->OnDelete('no action')
+                  ->OnUpdate('no action');
             $table->foreignId('product_id')
-                  ->constrained('products.id') 
-                  ->cascadeOnDelete();
+                  ->constrained('products') 
+                  >OnDelete('no action')
+                  ->OnUpdate('no action');
             $table->timestamps(); 
         });
     }
