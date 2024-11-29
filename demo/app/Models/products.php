@@ -42,6 +42,7 @@ class products extends Model
         'depth_unit',
         'volume_value',
         'volume_unit',
+        'media'
     ];
 
     protected $casts = [

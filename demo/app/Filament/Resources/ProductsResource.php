@@ -203,7 +203,7 @@ class ProductsResource extends Resource
     {
         return $table
             ->columns([
-                ImageColumn::make('image')
+                ImageColumn::make('media')
                     ->label('Image'),
                     
 
