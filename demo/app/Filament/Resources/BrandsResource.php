@@ -81,6 +81,7 @@ class BrandsResource extends Resource
                     TextInput::make('website')
                         ->required()
                         ->maxLength(255)
+                        ->url()
                         ,
 
                     Toggle::make('is_visible')

@@ -12,6 +12,6 @@ class brands extends Model
 
     use HasFactory;
 
-    protected $fillable =['name','slug','is_visible'];
+    protected $fillable =['name','slug','website','description','is_visible'];
 
 };

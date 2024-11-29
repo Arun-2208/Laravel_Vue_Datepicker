@@ -173,12 +173,12 @@ class ProductsResource extends Resource
 
                     Section::make('Associations')
                         ->schema([
-                            Select::make('shop_brand_id')
+                            Select::make('brand_id')
                                 ->relationship('brand', 'name')
                                 ->searchable()
                                 ->hiddenOn(ProductsRelationManager::class),
 
-                            Select::make('categories')
+                            Select::make('Categories')
                                 ->relationship('categories', 'name')
                                 ->multiple()
                                 ->required(),

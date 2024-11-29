@@ -105,7 +105,6 @@ class LinkResource extends Resource
             ])
             
 
-
             ->actions([
 
                 Tables\Actions\Action::make('visit')
