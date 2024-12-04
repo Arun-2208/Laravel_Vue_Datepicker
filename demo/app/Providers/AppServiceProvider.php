@@ -3,6 +3,9 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Filament\Facades\Filament;
+use App\Filament\Resources\ProductsResource\Widgets\StatsOverview;
+use App\Filament\Resources\ProductsResource\Widgets\SalesChart;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +22,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Filament::registerWidgets([
+            StatsOverview::class,
+            SalesChart::class
+        ]);
     }
 }

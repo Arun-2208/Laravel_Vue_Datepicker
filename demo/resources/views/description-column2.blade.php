@@ -1,0 +1,3 @@
+<div>
+{{$getRecord()->sku }}
+</div>

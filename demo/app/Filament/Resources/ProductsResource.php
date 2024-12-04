@@ -1,12 +1,11 @@
 <?php
 
-
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProductsResource\Pages;
 
 use App\Filament\Resources\ProductsResource\RelationMangers;
-
+use Filament\Tables\Actions\Action;
 use App\Models\products;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -15,10 +14,12 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-
+use Filament\Notifications\Notification; 
 use Filament\Forms\Components\TextInput;
-
+use App\Filament\Resources\ProductsResource\Widgets\StatsOverview;
 use Filament\Forms\Components\MarkdownEditor;
+use App\Filament\Resources\ProductsResource\Widgets\SalesChart;
+use Filament\Tables\Columns\ViewColumn;
 
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\Select;
@@ -34,6 +35,8 @@ use Filament\Forms\Components\Group;
 use Filament\Infolists\Components\Grid;
 use Filament\Forms\Components\DatePicker;
 use Filament\Tables\Filters\Filter;
+
+use Filament\Tables\Columns\HtmlColumn;
 
 use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\TextEntry;
@@ -52,7 +55,6 @@ use Filament\Tables\Filters\QueryBuilder\Constraints\RelationshipConstraint;
 use Filament\Tables\Filters\QueryBuilder\Constraints\RelationshipConstraint\Operators\IsRelatedToOperator;
 use Filament\Tables\Filters\QueryBuilder\Constraints\SelectConstraint;
 use Filament\Tables\Filters\QueryBuilder\Constraints\TextConstraint;
-
 
 class ProductsResource extends Resource
 {
@@ -203,6 +205,11 @@ class ProductsResource extends Resource
     {
         return $table
             ->columns([
+
+                ViewColumn::make('sku')
+                            ->label('sku')
+                            ->view('description-column2'),
+
                 ImageColumn::make('media')
                     ->label('Image'),
                     
@@ -238,7 +245,7 @@ class ProductsResource extends Resource
                     ->searchable()
                     ->sortable()
                     ->toggleable(),
-
+                
                 TextColumn::make('security_stock')
                     ->searchable()
                     ->sortable()
@@ -251,6 +258,14 @@ class ProductsResource extends Resource
                     ->sortable()
                     ->toggleable()
                     ->toggledHiddenByDefault(),
+
+                    TextColumn::make('description')
+                    ->label('Description')
+                    ->formatStateUsing(function ($state, $record) {
+                        return view('description-column', ['record' => $record])->render();
+                    })
+                    ->html(),
+
             ])
             ->filters([
                 QueryBuilder::make()
@@ -284,6 +299,41 @@ class ProductsResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+
+                Action::make('Convert-to-uppercase')
+                    ->label('Convert-to-uppercase')
+                    ->icon('heroicon-o-command-line')
+                    ->color('success')
+                    ->action(function (products $record){
+
+                        $record->description = strtoupper($record->description);
+                        $record->save();
+
+                        Notification::make()
+                            ->title("changed to caps")
+                            ->success()
+                            ->send();
+                    })
+                    ->requiresConfirmation()
+                    ->visible(),
+
+                    Action::make('Convert-to-lowercase')
+                    ->label('Convert-to-lowerrcase')
+                    ->icon('heroicon-o-command-line')
+                    ->color('success')
+                    ->action(function (products $record){
+
+                        $record->description = strtolower($record->description);
+                        $record->save();
+
+                        Notification::make()
+                            ->title("changed to small")
+                            ->success()
+                            ->send();
+                    })
+                    ->requiresConfirmation()
+                    ->visible(),
+
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -304,7 +354,15 @@ class ProductsResource extends Resource
         return [
             'index' => Pages\ListProducts::route('/'),
             'create' => Pages\CreateProducts::route('/create'),
-            'edit' => Pages\EditProducts::route('/{record}/edit'),
+            'edit' => Pages\EditProducts::route('/{record}/edit'), 
         ];
     }
+
+    public static function getWidgets(): array
+{
+    return [
+        StatsOverview::class,
+        SalesChart::class
+    ];
+}
 }
