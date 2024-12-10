@@ -17,5 +17,4 @@ class offersPage extends Page
     protected static ?string $navigationIcon = 'heroicon-o-cash';
     protected static ?string $navigationGroup = 'Shop';
 
-    
 }

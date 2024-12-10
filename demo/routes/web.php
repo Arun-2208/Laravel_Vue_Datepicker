@@ -14,3 +14,10 @@ Route::get('/offers-page/{input?}', function ($input = null) {
     ]);
 })->name('offers.page');
 
+
+
+Route::get('/date-picker' , function(){
+
+            return view('components.date-picker') ;
+
+})->name('date-picker.page');

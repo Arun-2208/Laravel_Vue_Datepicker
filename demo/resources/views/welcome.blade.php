@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
+        @vite(['resources/js/app.js', 'resources/css/app.css'])
         <title>Laravel</title>
 
         <!-- Fonts -->
@@ -171,6 +171,9 @@
                     </footer>
                 </div>
             </div>
+        </div>
+        <div id="app">
+        @yield('content')
         </div>
     </body>
 </html>
