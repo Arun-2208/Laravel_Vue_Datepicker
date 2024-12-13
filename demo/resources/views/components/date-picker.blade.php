@@ -106,7 +106,25 @@ input:checked + .slider {
 input:checked + .slider:before {
     transform: translateX(26px);
 }
+.my-header {
+    padding: 5px;
+    border: 0.2px solid grey;
+    width: 100%; 
+    text-align: center;
+  }
 
+  .custom-preview{
+   margin:5%;
+   display:flex;
+   align-items:center;
+   justify-content:center;
+   width:100;
+  }
+  .input-box{
+    width:30%;
+    border: 0.2px solid grey;
+    border radius:25px;
+  }
     </style>
 </head>
 <body>
@@ -119,8 +137,27 @@ input:checked + .slider:before {
             :range="true" 
             placeholder="Select date range"
             @update:model-value="updateDateRange"
+            text-input
+           
+            enable-time-picker="false"
         >
-        <template #right-sidebar>
+        
+        <template #menu-header>
+        <div class="my-header">
+        <div class ="custom-preview">
+        <span>
+            From <input class ="input-box" type="text" >  To : <input class ="input-box" type="text" >
+        </span>
+        </div>
+        <div class ="custom-preview">
+        <span v-if="compareToggle">
+            From <input class ="input-box" type="text" >  To : <input class ="input-box" type="text">
+        </span> 
+        </div>
+
+        </div>
+        </template>
+        <template #left-sidebar>
         <div class="sidebar">
         <label class="toggle-switch">
             <input type="checkbox" v-model="compareToggle">
@@ -131,15 +168,8 @@ input:checked + .slider:before {
         </template>
 
         </datepicker>
-        <p>
-            Primary range: 
-            @{{ primaryDateRange ? primaryDateRange[0] + ' to ' + primaryDateRange[1] : 'None' }}
-        </p>
-        <p v-if="compareToggle">
-            Secondary range: 
-            @{{ secondaryDateRange ? secondaryDateRange[0] + ' to ' + secondaryDateRange[1] : 'None' }}
-        </p>
         
     </div>
+</div>
 </body>
 </html>
