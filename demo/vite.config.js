@@ -13,9 +13,16 @@ export default defineConfig({
     ],
     resolve: {
         alias: {
-            vue: 'vue/dist/vue.esm-bundler.js', // Add this line
+            vue: 'vue/dist/vue.esm-bundler.js',
         },
     },
+
+    build:{
+        minify: false,
+        rollupOptions:{
+            treeshake: false,
+        }
+    }
     
 });
 
